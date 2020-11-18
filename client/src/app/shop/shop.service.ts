@@ -5,6 +5,8 @@ import { IPagination } from '../shared/models/pagination';
 import { IType } from '../shared/models/productType';
 import { delay, map } from 'rxjs/operators';
 import { ShopParams } from '../shared/models/shopParams';
+import { Observable } from 'rxjs';
+import { IProduct } from '../shared/models/product';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +16,7 @@ export class ShopService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts(shopParams: ShopParams) {
+  getProducts(shopParams: ShopParams): Observable<IPagination> {
     let params = new HttpParams();
     if (shopParams.brandId !== 0) {
       params = params.append('brandId', shopParams.brandId.toString());
@@ -43,11 +45,15 @@ export class ShopService {
       );
   }
 
-  getBrands() {
+  getProduct(id: number): Observable<IProduct> {
+    return this.http.get<IProduct>(`${this.baseUrl}products/${id}`);
+  }
+
+  getBrands(): Observable<IBrand[]> {
     return this.http.get<IBrand[]>(`${this.baseUrl}products/brands`);
   }
 
-  getTypes() {
+  getTypes(): Observable<IType[]> {
     return this.http.get<IType[]>(`${this.baseUrl}products/types`);
   }
 }
