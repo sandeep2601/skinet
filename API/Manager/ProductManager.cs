@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using API.Contract;
 using API.DTOs;
 using API.Helpers;
 using AutoMapper;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Manager
 {
-    public class ProductManager
+    public class ProductManager : IProductManager
     {
         private readonly IGenericRepository<Product> _productsRepo;
         private readonly IGenericRepository<ProductBrand> _productBrandRepo;

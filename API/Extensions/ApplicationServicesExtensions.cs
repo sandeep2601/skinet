@@ -1,5 +1,7 @@
 using System.Linq;
+using API.Contract;
 using API.Errors;
+using API.Manager;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +12,7 @@ namespace API.Extensions
     {
         public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IProductManager, ProductManager>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
             services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options =>
