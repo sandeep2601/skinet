@@ -40,6 +40,13 @@ namespace Infrastructure.Data
         {
             return await ApplySpecification(spec).CountAsync();
         }
+
+        public async Task<int> SaveAsync(Product productDetails)
+        {
+            await _context.AddAsync(productDetails);
+            return await _context.SaveChangesAsync();
+        }
+
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);

@@ -8,18 +8,17 @@ using API.Errors;
 using API.Helpers;
 using API.Contract;
 using AutoMapper;
+using System;
 
 namespace API.Controllers
 {
     public class ProductsController : BaseApiController
     {
         private readonly IProductManager _productManager;
-        private readonly IMapper _mapper;
 
         public ProductsController(IProductManager productManager, IMapper mapper)
         {
             _productManager = productManager;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -34,12 +33,12 @@ namespace API.Controllers
         [ProducesResponseType(typeof(ApiResponse), Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
-            Product product = await _productManager.GetProduct(id);
-            if (product == null)
+            ProductToReturnDto productData = await _productManager.GetProduct(id);
+            if (productData == null)
             {
                 return NotFound(new ApiResponse(404));
             }
-            return _mapper.Map<Product, ProductToReturnDto>(product);
+            return productData;
         }
 
         [HttpGet("brands")]
@@ -54,6 +53,15 @@ namespace API.Controllers
         {
             IReadOnlyList<ProductType> productTypes = await _productManager.GetProductTypes();
             return Ok(productTypes);
+        }
+        
+        [HttpPost("save")]
+        public async Task<IActionResult> SaveProductDetails(Product productDetails)
+        {
+            Console.Write(productDetails);
+            var response = await _productManager.SaveProductDetails(productDetails);
+            Console.Write(response);
+            return Ok(response);
         }
     }
 }

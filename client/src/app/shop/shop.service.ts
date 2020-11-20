@@ -57,4 +57,8 @@ export class ShopService {
   getTypes(): Observable<IType[]> {
     return this.http.get<IType[]>(`${this.baseUrl}products/types`);
   }
+
+  saveProduct(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}products/save`, data);
+  }
 }
